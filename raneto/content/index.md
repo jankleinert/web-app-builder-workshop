@@ -1,50 +1,12 @@
 ---
-Title: Web App Builder Workshop
+Title: Web App Builder Workshop Introduction
 NextPage: setup
-ExitSign: Set Up Your Environment
+ExitSign: Getting Started
 Sort: 1
 ---
 
-This is the intro to the workshop.
+In this workshop, you will learn how to deploy modern single page web apps, such as ones created with React or Vue, to Red Hat OpenShift using a source-to-image (S2I) builder image for web apps.
 
-#### Standard code block
+First, you'll learn how to quickly deploy single page web apps for development purposes. Then, we'll cover how to combine the S2I image with a current HTTP server image, like NGINX, using an OpenShift chained build.
 
-```
-echo "standard code block"
-```
-
-#### Click text to execute
-
-```execute-1
-echo "execute in terminal 1"
-```
-
-```execute-2
-echo "execute in terminal 2"
-```
-
-```execute
-echo "execute in terminal 1"
-```
-
-#### Click text to copy
-
-```copy
-echo "copy text to buffer"
-```
-
-#### Variable interpolation
-
-base_url: %base_url%
-
-username: %username%
-
-project_namespace: %project_namespace%
-
-cluster_subdomain: %cluster_subdomain%
-
-#### Web site links
-
-[External](https://www.openshift.com)
-
-[Internal](index)
+During the workshop, we will deploy both a React app and a Vue app, but you could follow a similar process for other frameworks as well.

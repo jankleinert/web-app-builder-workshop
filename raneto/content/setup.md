@@ -1,36 +1,32 @@
 ---
-Title: Environment Setup
+Title: Getting Started
 PrevPage: index
+NextPage: 
 Sort: 2
 ---
 
-Here are the setup steps...
+### Get Familiar with the Workshop Environment
 
-#### Standard code block
+During the workshop, all of the instructions will be here in this panel on the left side of your screen. The right side of the screen contains one or more browser-based terminal windows.
 
-```
-echo "standard code block"
-```
+As you complete the workshop, you will encounter commands that you need to execute, like the one below. When you see the red play button icon in a code block, you can click that code block and the command will execute in the terminal. 
 
-#### Click text to execute
+Try it now!
+
+#### Click the code block to execute:
 
 ```execute-1
-echo "execute in terminal 1"
+echo "Hello from the terminal!"
 ```
+You will also see some code blocks with the scissors icon. When you click those code blocks, the text inside will be copied to your clipboard so that you can paste it in the terminal.
 
-```execute-2
-echo "execute in terminal 2"
-```
-
-```execute
-echo "execute in terminal 1"
-```
-
-#### Click text to copy
+#### Click the text to copy and then paste it in the terminal:
 
 ```copy
-echo "copy text to buffer"
+echo "Copying text to the clipboard"
 ```
+
+### Log into OpenShift
 
 #### Variable interpolation
 
