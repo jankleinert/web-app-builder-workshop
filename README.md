@@ -26,3 +26,5 @@ oc tag web-app-builder-workshop:latest workshop-app:latest
 ```
 
 Run tag again after each re-build of the content if building from local directory and making changes.
+
+Hit the "Restart" button on the dashboard to kill the current session and create a new one with the updated image.
