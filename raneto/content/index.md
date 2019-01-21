@@ -25,7 +25,7 @@ Try it now!
 ```execute-1
 echo "Hello from the terminal"
 ```
-You will also see some code blocks with the scissors icon. When you click those code blocks, the text inside will be copied to your clipboard so that you can paste it in the terminal.
+You will also see some code blocks with the scissors icon. When you click those code blocks, the text inside will be copied to your clipboard so that you can paste it to a different application or browser window.
 
 #### Click the text to copy and then paste it in the terminal:
 
