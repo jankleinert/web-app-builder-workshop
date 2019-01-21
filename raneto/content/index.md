@@ -14,7 +14,7 @@ During the workshop, we will deploy both a React app and a Vue app, but you coul
 
 ### Getting Familiar with the Workshop Environment
 
-During the workshop, all of the instructions will be here in this panel on the left side of your screen. The right side of the screen contains one or more browser-based terminal windows.
+During the workshop, all of the instructions will be here in this panel on the left side of your screen. The right side of the screen a browser-based terminal window.
 
 As you complete the workshop, you will encounter commands that you need to execute, like the one below. When you see the play button icon in a code block, you can click that code block and the command will execute in the terminal.
 

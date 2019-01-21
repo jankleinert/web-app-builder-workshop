@@ -6,7 +6,7 @@ if (!web_console_url && cluster_subdomain.startsWith('apps.')) {
 }
 
 var config = {
-    site_title: 'Single Page Web Apps',
+    site_title: 'Single Page Apps Using Chained Builds',
 
     variables: [
         {
