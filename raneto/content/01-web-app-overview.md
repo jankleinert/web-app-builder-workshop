@@ -1,6 +1,7 @@
 ---
 Title: Overview of Modern, Single Page Web Apps
-NextPage: create-and-deploy-react
+PrevPage: index
+NextPage: 02-create-and-deploy-react
 ExitSign: Create and Deploy a React App
 Sort: 2
 ---
