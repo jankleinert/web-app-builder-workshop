@@ -23,7 +23,7 @@ Try it now!
 #### Click the code block to execute:
 
 ```execute-1
-echo "Hello from the terminal!"
+echo "Hello from the terminal"
 ```
 You will also see some code blocks with the scissors icon. When you click those code blocks, the text inside will be copied to your clipboard so that you can paste it in the terminal.
 
