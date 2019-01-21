@@ -55,28 +55,101 @@ We suggest that you begin by typing:
 Happy hacking!
 ```
 
-Assuming you are in the newly created project directory, you can now run the second command to deploy the app to OpenShift:
+Now, cd into the react-web-app directory.
 
 ```execute
-oc new-app nodeshift/centos7-s2i-web-app
+cd react-web-app
 ```
 
-Your OpenShift web console will look something like this:
+OpenShift can work with any accessible Git repository. This could be GitHub,
+GitLab, or any other server that speaks Git. You can even register webhooks in
+your Git server to initiate OpenShift builds triggered by any update to the
+application code!
 
-Screenshot of OpenShift web console after deploying the React app
+We've created an empty internal Gogs repository for you located at the following URL:
 
-And here’s what the web console looks like when you run the application:
+CAUTION: In the following url(s), be sure you are accessing the URL with the `%username%` Gogs username provided to you. Your Gogs credentials are the same as your OpenShift credentials.
 
-Screenshot of what the web console looks like when you run the React app
+```copy
+http://gogs-workshop.%cluster_subdomain%/%username%/react-web-app.git
+```
 
-Before we get into the Angular example, let’s see what that last command was doing.
+Let's get everything set up.
 
-First, we see npx nodeshift. We are using npx to run the nodeshift module. As I’ve mentioned in previous posts, nodeshift is a module for easily deploying node apps to OpenShift.
+```execute
+git init
+git add .
+git remote add %username% http://gogs-workshop.%cluster_subdomain%/%username%/react-web-app.git
+git config --local user.email "%username%@example.com"
+git config --local user.name "%username%"
+git commit -m 'initial commit'
+git push %username% master
+```
 
-Next, let’s see what options are being passed to nodeshift. The first is --strictSSL=false. Since we are using minishift, which is using a self-signed certificate, we need to tell nodeshift (really, we are telling the request library, which is used under the covers), about this so a security error isn’t thrown.
+Now, we'll use the web-app builder image to deploy our React app. `nodeshift/centos7-s2i-web-app` is the name of the builder image we are using, and we want to use the image with the `10.x` tag. By default, this s2i image uses the `serve` module to serve the generated static files. That behavior is fine for development purposes. Later in the workshop, you will learn how to use this s2i image with NGINX.
 
-Next is --dockerImage=bucharestgold/centos7-s2i-web-app --imageTag=10.x. This tells nodeshift we want to use the new Web App Builder image and we want to use its 10.x tag.
+```execute
+oc new-app nodeshift/centos7-s2i-web-app:10.x~http://gogs-workshop.%cluster_subdomain%/%username%/react-web-app.git
+```
 
-Next, we want to tell the S2I image that we want to use yarn: --build.env YARN_ENABLED=true. And finally, the --expose flag tells nodeshift to create an OpenShift route for us, so we can get a publicly available link to our application.
+You will see output similar to this:
 
-Since this is a “get on OpenShift quickly” post, the S2I image uses the serve module to serve the generated static files. In a later post, we will see how to use this S2I image with NGINX.
+```
+Found Docker image e32759a (2 weeks old) from Docker Hub for "nodeshift/centos7-s2i-web-a
+pp:10.x"
+
+    Node.js 10.15.0
+    ---------------
+    Web Application building with Node.js
+
+    Tags: builder, nodejs
+
+    * An image stream will be created as "centos7-s2i-web-app:10.x" that will track the sourc
+e image
+    * A source build using source code from http://gogs-workshop.apps.jkleinert-5dcc.openshif
+tworkshop.com/user5/react-web-app.git will be created
+      * The resulting image will be pushed to image stream "react-web-app:latest"
+      * Every time "centos7-s2i-web-app:10.x" changes a new build will be triggered
+    * This image will be deployed in deployment config "react-web-app"
+    * Port 8080/tcp will be load balanced by service "react-web-app"
+      * Other containers can access this service through the hostname "react-web-app"
+
+--> Creating resources ...
+    imagestream "centos7-s2i-web-app" created
+    imagestream "react-web-app" created
+    buildconfig "react-web-app" created
+    deploymentconfig "react-web-app" created
+    service "react-web-app" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/react-web-app' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one
+ or more of the commands below:
+     'oc expose svc/react-web-app'
+    Run 'oc status' to view your app.
+```
+
+Now, run the following command to view the logs and watch the progress of the build:
+
+```execute
+oc logs -f bc/react-web-app
+```
+
+Finally, once the build is complete, run the following command to create a route (an externally-accessible URL) for the app.
+
+```execute
+oc expose svc/react-web-app
+oc get routes
+```
+
+You should see a route similar to this:
+
+```
+NAME            HOST/PORT                                                       PATH      SERVICES        PORT       T
+ERMINATION   WILDCARD
+react-web-app   react-web-app-user5.apps.jkleinert-5dcc.openshiftworkshop.com             react-web-app   8080-tcp
+             None
+```
+
+Copy the URL and paste it in a new tab in your browser.
+
+TODO: screenshot of app
