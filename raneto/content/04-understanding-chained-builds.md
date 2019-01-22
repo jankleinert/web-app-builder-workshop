@@ -1,9 +1,9 @@
 ---
 Title: Understanding Chained Builds
-PrevPage: 03-create-and-deploy-vue
+PrevPage: 02-create-and-deploy-react
 NextPage: 05-deploy-app-using-chained-build
 ExitSign: Deploy the App Using a Chained Build
-Sort: 5
+Sort: 4
 ---
 ### Chained Builds
 
@@ -15,9 +15,13 @@ What this means is that we can use the Web App Builder image to run our build, a
 
 This allows us to use the Web App Builder image as a “pure” builder and also keep our runtime image small.
 
+### OpenShift Templates
+
 Let’s take a look at an example to see how this all comes together by adding an OpenShift template file to our React app to piece everything together.
 
 You can find can example of the template file [here](https://github.com/jankleinert/react-web-app/blob/master/.openshiftio/application.yaml).
+
+#### Parameters
 
 Let’s take a look at some of the more important parts of this file.
 
@@ -44,7 +48,9 @@ parameters:
     required: false
 ```
 
-The first 3 entries in the parameters section are for specifying your source repo's URL, branch name, and directory within the repo. The OUTPUT_DIR parameter is the location where the compiled static files are located. For our React app, we don’t need to do anything special, since the default value (`build`) is what React uses. If you were using another framework with a differently-named output directory, that's where you could change it.
+The first 3 entries in the parameters section are for specifying your source repo's URL, branch name, and directory within the repo. The `OUTPUT_DIR` parameter is the location where the compiled static files are located. For our React app, we don’t need to do anything special, since the default value (`build`) is what React uses. If you were using another framework with a differently-named output directory, that's where you could change it.
+
+#### Image Streams
 
 Now let’s take a look at the image streams.
 
@@ -83,9 +89,9 @@ Now let’s take a look at the image streams.
 
 First, let’s take a look at the third and fourth images. We can see that both are defined as Docker images, and we can see where they come from.
 
-The third is the web-app-builder image, nodeshift/centos7-s2i-web-app, which is using the 10.x tag from Docker hub.
+The third is the Web App Builder image, `nodeshift/centos7-s2i-web-app`, which is using the `10.x` tag from Docker hub.
 
-The fourth is an NGINX image (version 1.12) using the latest tag from Docker hub.
+The fourth is an NGINX image (version 1.12) using the `latest` tag from Docker hub.
 
 Now let’s take a look at those first two images. Both images are empty to start. These images will be created during the build phase.
 
@@ -93,7 +99,9 @@ The first image, `react-web-app-builder`, will be the result of the “assemble�
 
 The second image, `react-web-app-runtime`, will be the result of combining the `nginx-image-runtime` with some of the files from the `react-web-app-builder image`. This image will also be the image that is deployed and will contain only the web server and the static HTML, JavaScript, and CSS for the application.
 
-This might sound a little confusing now, but once we look at the build configurations, things should be a little more clear.
+This might sound a little confusing now, but once we look at the build configurations, things should be more clear.
+
+#### Build Configs
 
 In this template, there are two build configurations. Let’s take a look at them one at a time.
 
@@ -142,7 +150,7 @@ Line 4 is telling us to use the `web-app-builder-runtime` image that we saw in t
 
 Line 5 is saying we want to use an incremental build if the S2I image supports it. The Web App Builder image does support it. On the first run, once the assemble phase is complete, the image will save the `node_modules` folder into an archive file. Then on subsequent runs, the image will un-archive that `node_modules` folder, which will speed up build times.
 
-The last thing to call out, line 6, is just a few triggers that are set up, so when something changes, this build can be kicked off without manual interaction.
+The last thing to call out, line 6, is where a few triggers are set up, so when something changes, this build can be kicked off without manual interaction.
 
  Now let’s take a look at the second build configuration. Most of it is very similar to the first, but there is one important difference:
 
@@ -200,3 +208,5 @@ The strategy section, line 6, is also similar to the first build configuration. 
 The final thing to point out is the trigger section, line 7, which will trigger this build anytime the `react-web-app-builder` image changes.
 
 The rest of the template is fairly standard deployment configuration, service, and route stuff, which we don’t need to go into. Note that the image that will be deployed will be the `react-web-app-runtime` image.
+
+Now that you understand what is in the template, let's use it to deploy our app.

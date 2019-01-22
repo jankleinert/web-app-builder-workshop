@@ -1,16 +1,18 @@
 ---
 Title: Create and Deploy a React App
 PrevPage: 01-web-app-overview
-NextPage: 03-create-and-deploy-vue
-ExitSign: Create and Deploy a Vue App
+NextPage: 04-understanding-chained-builds
+ExitSign: Chained Builds
 Sort: 3
 ---
 
 ### Create the React App
 
-Let’s start with the React application. We will use create-react-app to create the React app that we will deploy in this workshop. ***TODO*** learn more link.
+Let’s start with the React application. We will use create-react-app to create the React app that we will deploy in this workshop. [Click here to learn more about create-react-app](https://github.com/facebook/create-react-app).
 
-Run the following command to create your React app. Note: npx is a tool that comes with npm 5.2+ to run one-off commands. Check out more here.
+Run the following command to create your React app. This may take 1-2 minutes to complete. 
+
+Note: [npx](https://github.com/zkat/npx#readme) is a tool that comes with npm 5.2+ to run one-off commands.
 
 ```execute
 npx create-react-app react-web-app
@@ -55,11 +57,13 @@ We suggest that you begin by typing:
 Happy hacking!
 ```
 
-Now, cd into the react-web-app directory.
+Now, cd into the react-web-app directory:
 
 ```execute
 cd react-web-app
 ```
+
+### Store the Code in Your Gogs Repo
 
 OpenShift can work with any accessible Git repository. This could be GitHub,
 GitLab, or any other server that speaks Git. You can even register webhooks in
@@ -67,14 +71,12 @@ your Git server to initiate OpenShift builds triggered by any update to the
 application code!
 
 We've created an empty internal Gogs repository for you located at the following URL:
+Click the link and log in. Your Gogs credentials are the same as your OpenShift credentials.
 
-CAUTION: In the following url(s), be sure you are accessing the URL with the `%username%` Gogs username provided to you. Your Gogs credentials are the same as your OpenShift credentials.
+http://gogs-workshop.%cluster_subdomain%/%username%/react-web-app
 
-```copy
-http://gogs-workshop.%cluster_subdomain%/%username%/react-web-app.git
-```
 
-Let's get everything set up.
+You probably noticed that it's just an empty repo. Come back to the terminal so we can get everything set up and push your code to the repo:
 
 ```execute
 git init
@@ -85,6 +87,12 @@ git config --local user.name "%username%"
 git commit -m 'initial commit'
 git push %username% master
 ```
+
+Enter your username and password, if prompted. Go refresh the Gogs page in your browser, and now you should see the files there.
+
+![Gogs Repo Screenshot](./gogs-repo.png)
+
+### Deploy Using the `serve` Module
 
 Now, we'll use the web-app builder image to deploy our React app. `nodeshift/centos7-s2i-web-app` is the name of the builder image we are using, and we want to use the image with the `10.x` tag. By default, this s2i image uses the `serve` module to serve the generated static files. That behavior is fine for development purposes. Later in the workshop, you will learn how to use this s2i image with NGINX.
 
@@ -134,7 +142,7 @@ Now, run the following command to view the logs and watch the progress of the bu
 oc logs -f bc/react-web-app
 ```
 
-Finally, once the build is complete, run the following command to create a route (an externally-accessible URL) for the app.
+Finally, once the build is complete, run the following command to create a route (an externally-accessible URL) for the app:
 
 ```execute
 oc expose svc/react-web-app
@@ -150,6 +158,6 @@ react-web-app   react-web-app-user5.apps.jkleinert-5dcc.openshiftworkshop.com   
              None
 ```
 
-Copy the URL and paste it in a new tab in your browser.
+Copy the URL and paste it in a new tab in your browser. Your React app is now running, using the `serve` module!
 
-TODO: screenshot of app
+![Create React App Screenshot](./cra-screenshot.png)
